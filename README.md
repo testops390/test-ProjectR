@@ -1,73 +1,176 @@
-# React + TypeScript + Vite
+# 衣装管理サイト（閲覧用）
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+このリポジトリは、衣装の在庫状況を閲覧するためのサイトです。
 
-Currently, two official plugins are available:
+GitHub Pages を利用して公開しています。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+サイトでは以下の情報を確認できます。
 
-## React Compiler
+・衣装の画像  
+・衣装ID  
+・カテゴリ  
+・状態（在庫 / 貸出中 / 洗濯中 / 廃棄 など）  
+・セットID  
+・セット一覧  
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+# システム構成
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+衣装管理.xlsx  
+↓  
+JSON生成（npm run gen）  
+↓  
+サイト生成（npm run build）  
+↓  
+GitHub Pages公開
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# フォルダ構成
+costume-project
+├ public
+│ ├ data.json
+│ └ 衣装写真
+│
+├ docs（公開サイト）
+│ ├ index.html
+│ ├ data.json
+│ ├ assets
+│ └ 衣装写真
+│
+├ scripts
+│ └ excel_to_json.ts
+│
+├ src
+│ └ サイトソースコード
+│
+└ 衣装管理.xlsx
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+# サイトの機能
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+・衣装一覧表示  
+・検索（ID / セットID / メモ など）  
+・カテゴリ絞り込み  
+・状態絞り込み  
+・セットあり / なし  
+・セットクリックで一覧表示  
+
+---
+
+# 更新方法（通常）
+
+衣装を追加したり状態を変更した場合は、以下を行います。
+
+1 Excelを更新  
+2 JSONを生成  
+3 サイトをビルド  
+4 GitHubにアップロード  
+
+---
+
+# 更新手順
+
+PowerShellで以下を実行します。
+
+npm run gen
+npm run build
+
+git add -A
+git commit -m "update"
+git push --force-with-lease
+
+
+これでサイトが更新されます。
+
+GitHub Pagesは数秒〜1分ほどで反映されます。
+
+---
+
+# Excel更新時の注意
+
+・衣装IDは重複させない  
+・画像ファイル名は衣装IDと同じにする  
+
+例
+ITM-0001.jpg
+ITM-0002.jpg
+
+
+---
+
+# 画像フォルダ
+衣装写真
+├ メイド
+├ アイドル
+
+例
+衣装写真/メイド/ITM-0001.jpg
+
+
+---
+
+# セット衣装
+
+セットIDがある衣装は  
+クリックするとセット一覧が表示されます。
+
+例
+SET-0001
+
+ITM-0001
+ITM-0002
+ITM-0003
+
+
+---
+
+# 開発環境
+
+Node.js 必須
+
+確認
+node -v
+npm -v
+
+---
+
+# 初回セットアップ
+npm install
+
+---
+
+# JSON生成
+npm run gen
+
+---
+
+# サイトビルド
+npm run build
+
+---
+
+# 公開URL
+
+GitHub Pages
+##テスト##https://testops390.github.io/test-ProjectR/
+
+---
+
+# 管理方針
+
+・Excelが正データ  
+・サイトは閲覧専用  
+・ExcelはGitHubに公開しない  
+
+---
+
+更新の最短コマンド
+npm run gen
+npm run build
+git add -A
+git commit -m "update"
+git push --force-with-lease
