@@ -22,3 +22,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# ローカル専用（GitHubに上げない）
+衣装管理.xlsx
