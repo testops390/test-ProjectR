@@ -6,6 +6,6 @@ export default defineConfig({
   base: "/test-ProjectR/",
   build: {
     outDir: "docs",
-    emptyOutDir: true
-  }
+    emptyOutDir: true,
+  },
 });
