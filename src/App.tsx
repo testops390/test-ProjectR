@@ -20,6 +20,16 @@ export default function App() {
 
   const [openSetId, setOpenSetId] = useState<string | null>(null);
 
+  // ★モーダル表示中は背面スクロールを止める
+  useEffect(() => {
+    if (!openSetId) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [openSetId]);
+
   useEffect(() => {
     fetch(withBase("data.json"), { cache: "no-store" })
       .then(async (r) => {
@@ -62,8 +72,10 @@ export default function App() {
         it.category ?? "",
         it.name ?? "",
         it.status,
-        it.note ?? ""
-      ].join(" ").toLowerCase();
+        it.note ?? "",
+      ]
+        .join(" ")
+        .toLowerCase();
 
       return hay.includes(qq);
     });
@@ -80,7 +92,7 @@ export default function App() {
         <div className="container">
           <div className="h1">衣装一覧（閲覧）</div>
           <div className="sub">
-            更新：Excel/写真 → <b>npm run gen</b>（または watch）→ ブラウザ更新。公開更新は <b>npm run publish</b>。
+            更新：Excel/写真 → <b>npm run gen</b>（または watch）→ ブラウザ更新
           </div>
 
           <div className="controls">
@@ -93,14 +105,21 @@ export default function App() {
             <select value={status} onChange={(e) => setStatus(e.target.value)}>
               <option value={ALL}>状態：全部</option>
               {statuses.map((s) => (
-                <option key={s} value={s}>状態：{s}</option>
+                <option key={s} value={s}>
+                  状態：{s}
+                </option>
               ))}
             </select>
 
-            <select value={category} onChange={(e) => setCategory(e.target.value)}>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
               <option value={ALL}>カテゴリ：全部</option>
               {categories.map((c) => (
-                <option key={c} value={c}>カテゴリ：{c}</option>
+                <option key={c} value={c}>
+                  カテゴリ：{c}
+                </option>
               ))}
             </select>
 
@@ -113,7 +132,7 @@ export default function App() {
 
           <div className="infoBar">
             <div>件数：{filtered.length}</div>
-            <div>生成日時：{data?.generatedAt ?? "-"}</div>
+            <div>最終更新：{data?.generatedAt ?? "-"}</div>
           </div>
 
           {err && (
@@ -165,7 +184,14 @@ export default function App() {
                       {it.setId && (
                         <div className="mini">
                           セットID：
-                          <a href="#" onClick={(e) => { stop(e); openSet(); }} style={{ marginLeft: 6 }}>
+                          <a
+                            href="#"
+                            onClick={(e) => {
+                              stop(e);
+                              openSet();
+                            }}
+                            style={{ marginLeft: 6 }}
+                          >
                             {it.setId}（開く）
                           </a>
                         </div>
@@ -202,7 +228,11 @@ export default function App() {
                   return (
                     <div className="card" key={x.itemId}>
                       <div className="thumb">
-                        {img ? <img src={img} alt={x.itemId} loading="lazy" /> : <div className="mini">画像なし</div>}
+                        {img ? (
+                          <img src={img} alt={x.itemId} loading="lazy" />
+                        ) : (
+                          <div className="mini">画像なし</div>
+                        )}
                       </div>
                       <div className="body">
                         <div className="rowTop">
